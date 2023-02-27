@@ -1,23 +1,27 @@
 # -*- coding: utf-8 -*-
 
 import webbrowser
-import requests, html, json
+import requests, html
 import clipboard
 
 from wox import Wox
 
+
+HEADERS = {'Host': 'apis.dict.cn', 'Referer': 'http://dict.cn/'}
+API_ADDR = "http://apis.dict.cn/apis/suggestion.php"
+WEB_ADDR = "http://dict.cn/search"
+
 class Dictionary(Wox):
     def request(self, url, params):
-        headers = {'Host': 'apis.dict.cn', 'Referer': 'http://dict.cn/'}
 
         #If user set the proxy, you should handle it.
         if self.proxy and self.proxy.get("enabled") and self.proxy.get("server"):
             proxies = {
                 "http":"http://{}:{}".format(self.proxy.get("server"),self.proxy.get("port")),
                 "https":"http://{}:{}".format(self.proxy.get("server"),self.proxy.get("port"))}
-            return requests.get(url, params=params, headers=headers, proxies=proxies)
+            return requests.get(url, params=params, headers=HEADERS, proxies=proxies)
         else:
-            return requests.get(url, params=params, headers=headers)
+            return requests.get(url, params=params, headers=HEADERS)
 
     def query(self, query):
         results = []
@@ -29,7 +33,7 @@ class Dictionary(Wox):
             })
             return results
         
-        data = self.request("http://apis.dict.cn/apis/suggestion.php",  {"lt": "zh-cn", "q": query}).json()
+        data = self.request(API_ADDR,  {"lt": "zh-cn", "q": query}).json()
 
         for d in data.get("s"):
             results.append({
@@ -39,7 +43,7 @@ class Dictionary(Wox):
                 "ContextData": "ctxData",
                 "JsonRPCAction": {
                     'method': 'open_browser',
-                    'parameters': ["http://dict.cn/search?q={}".format(d.get("g"))],
+                    'parameters': ["{}?q={}".format(WEB_ADDR, d.get("g"))],
                     'dontHideAfterAction': False
                 }
              })
