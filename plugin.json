@@ -1,0 +1,13 @@
+{
+    "ID":"e7bfb174-5509-407b-9dba-16571a8da599",
+    "ActionKeyword":"d",
+    "Name":"Dictionary",
+    "Description":"dictionary from dict.cn",
+    "Author":"Wox",
+    "Version":"1.0",
+    "Language":"python",
+    "Website":"https://github.com/Wox-launcher/Wox",
+    "IcoPath":"Images\\translate.png",
+    "ExecuteFileName":"main.py",
+    "Disabled": true
+}
