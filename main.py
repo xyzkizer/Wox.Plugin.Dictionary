@@ -37,8 +37,8 @@ class Dictionary(Wox):
 
         for d in data.get("s"):
             results.append({
-                "Title": "{}".format(d.get("g")),
-                "SubTitle": "{}".format(html.unescape(d.get("e"))),
+                "Title": "{}".format(d.get("g").lstrip()),
+                "SubTitle": "{}".format(html.unescape(d.get("e")).lstrip()),
                 "IcoPath":"Images/translate.png",
                 "ContextData": "ctxData",
                 "JsonRPCAction": {
