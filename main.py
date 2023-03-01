@@ -35,10 +35,20 @@ class Dictionary(Wox):
         
         data = self.request(API_ADDR,  {"lt": "zh-cn", "q": query}).json()
 
-        for d in data.get("s"):
+        explains = data.get("s")
+
+        if not explains:
             results.append({
-                "Title": "{}".format(d.get("g").lstrip()),
-                "SubTitle": "{}".format(html.unescape(d.get("e")).lstrip()),
+                "Title": "找不到对应的翻译",
+                "SubTitle": "从 http://dict.cn 获取英汉词语解释",
+                "IcoPath":"Images/translate.png",
+            })
+            return results
+
+        for d in explains:
+            results.append({
+                "Title": d.get("g").lstrip(),
+                "SubTitle": html.unescape(d.get("e")).lstrip(),
                 "IcoPath":"Images/translate.png",
                 "ContextData": "ctxData",
                 "JsonRPCAction": {
